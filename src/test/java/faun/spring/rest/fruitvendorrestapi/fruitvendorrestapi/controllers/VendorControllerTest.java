@@ -1,4 +1,4 @@
-package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors;
+package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers.VendorController;
