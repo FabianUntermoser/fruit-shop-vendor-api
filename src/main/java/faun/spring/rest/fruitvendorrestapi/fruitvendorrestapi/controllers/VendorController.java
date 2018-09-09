@@ -1,4 +1,4 @@
-package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors;
+package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.Vendor;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.VendorList;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(VendorController.BASE_API_URL)
 public class VendorController {
 
-    static final String BASE_API_URL = "/api/v1/vendors";
+    public static final String BASE_API_URL = "/api/v1/vendors";
 
     private final VendorService vendorService;
 
