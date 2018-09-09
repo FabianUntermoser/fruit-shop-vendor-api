@@ -2,7 +2,7 @@ package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.do
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Vendor {
+public class VendorDTO {
 
     private Long id;
     private String name;
@@ -10,7 +10,7 @@ public class Vendor {
     @JsonProperty("vendor_url")
     private String vendorUrl;
 
-    public Vendor(Long id, String name, String vendorUrl) {
+    public VendorDTO(Long id, String name, String vendorUrl) {
         this.id = id;
         this.name = name;
         this.vendorUrl = vendorUrl;

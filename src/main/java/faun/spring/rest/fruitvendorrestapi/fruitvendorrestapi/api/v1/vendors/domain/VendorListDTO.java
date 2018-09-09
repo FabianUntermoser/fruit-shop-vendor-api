@@ -2,19 +2,19 @@ package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.do
 
 import java.util.List;
 
-public class VendorList {
+public class VendorListDTO {
 
-    private List<Vendor> vendors;
+    private List<VendorDTO> vendors;
 
-    public VendorList(List<Vendor> vendors) {
+    public VendorListDTO(List<VendorDTO> vendors) {
         this.vendors = vendors;
     }
 
-    public List<Vendor> getVendors() {
+    public List<VendorDTO> getVendors() {
         return vendors;
     }
 
-    public void setVendors(List<Vendor> vendors) {
+    public void setVendors(List<VendorDTO> vendors) {
         this.vendors = vendors;
     }
 }

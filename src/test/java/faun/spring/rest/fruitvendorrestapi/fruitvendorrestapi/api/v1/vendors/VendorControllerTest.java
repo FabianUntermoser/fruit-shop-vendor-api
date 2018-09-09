@@ -1,6 +1,6 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors;
 
-import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.Vendor;
+import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.VendorDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers.VendorController;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services.VendorService;
 import org.junit.Before;
@@ -33,14 +33,14 @@ public class VendorControllerTest {
     @MockBean
     private VendorService vendorService;
 
-    private List<Vendor> vendorResultList;
+    private List<VendorDTO> vendorResultList;
 
     @Before
     public void setUp() {
         vendorResultList = new ArrayList<>();
-        vendorResultList.add(new Vendor(1L, "first Vendor", VendorController.BASE_API_URL + "/1"));
-        vendorResultList.add(new Vendor(2L, "second Vendor", VendorController.BASE_API_URL + "/2"));
-        vendorResultList.add(new Vendor(3L, "third Vendor", VendorController.BASE_API_URL + "/3"));
+        vendorResultList.add(new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1"));
+        vendorResultList.add(new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2"));
+        vendorResultList.add(new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3"));
     }
 
     @Test
