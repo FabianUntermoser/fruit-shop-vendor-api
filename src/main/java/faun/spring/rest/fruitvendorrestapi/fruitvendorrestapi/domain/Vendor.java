@@ -1,7 +1,17 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Vendor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
 
     public Vendor(Long id, String name) {
