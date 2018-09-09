@@ -1,7 +1,6 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
-import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers.VendorController;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services.VendorService;
 import org.junit.Before;
 import org.junit.Test;
