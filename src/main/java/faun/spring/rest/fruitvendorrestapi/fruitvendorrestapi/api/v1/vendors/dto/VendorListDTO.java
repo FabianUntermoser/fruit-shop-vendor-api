@@ -1,4 +1,4 @@
-package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain;
+package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto;
 
 import java.util.List;
 

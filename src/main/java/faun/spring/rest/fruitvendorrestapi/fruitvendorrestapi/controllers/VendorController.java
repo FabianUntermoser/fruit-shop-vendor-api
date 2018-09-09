@@ -1,7 +1,7 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 
-import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.VendorDTO;
-import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.domain.VendorListDTO;
+import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
+import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorListDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services.VendorService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
