@@ -3,10 +3,8 @@ package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorListDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services.VendorService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +29,12 @@ public class VendorController {
     @GetMapping("/{id}")
     public VendorDTO getVendorById(@PathVariable String id) {
         return vendorService.getVendorById(Long.valueOf(id));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public VendorDTO createVendor(@RequestBody VendorDTO vendorDTO) {
+        return vendorService.addVendor(vendorDTO);
     }
 
 }

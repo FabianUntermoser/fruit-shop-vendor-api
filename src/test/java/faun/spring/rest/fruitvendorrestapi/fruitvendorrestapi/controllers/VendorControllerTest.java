@@ -1,5 +1,6 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services.VendorService;
 import org.junit.Before;
@@ -17,10 +18,12 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +69,8 @@ public class VendorControllerTest {
 
     @Test
     public void testGettingVendorById() throws Exception {
-        given(vendorService.getVendorById(anyLong())).willReturn(correctVendorOne);
+        given(vendorService.getVendorById(anyLong()))
+                .willReturn(correctVendorOne);
 
         mockMvc.perform(get(VendorController.BASE_API_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -76,4 +80,23 @@ public class VendorControllerTest {
         then(vendorService).should(times(1)).getVendorById(anyLong());
     }
 
+    @Test
+    public void testPostVendor() throws Exception {
+        given(vendorService.addVendor(anyObject()))
+                .willReturn(correctVendorOne);
+
+        mockMvc.perform(post(VendorController.BASE_API_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJsonString(correctVendorOne)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", equalTo(correctVendorOne.getName())));
+    }
+
+    private String toJsonString(VendorDTO vendor) {
+        try {
+            return new ObjectMapper().writeValueAsString(vendor);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }
