@@ -88,4 +88,11 @@ public class VendorServiceImplTest {
         assertNotNull(vendorDTO);
         assertEquals(correctVendorOne.getId(), vendorDTO.getId());
     }
+
+    @Test
+    public void testDeleteVendor() {
+        vendorService.deleteVendor(correctVendorDTOone.getId());
+
+        then(vendorRepository).should(times(1)).deleteById(correctVendorDTOone.getId());
+    }
 }
