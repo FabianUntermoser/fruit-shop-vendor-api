@@ -14,8 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -37,7 +36,7 @@ public class VendorServiceImplTest {
         vendorService = new VendorServiceImpl(vendorRepository, new VendorMapper());
         correctVendorOne = new Vendor(1L, "First Vendor");
         correctVendorTwo = new Vendor(2L, "Second Vendor");
-        correctVendorDTOone = new VendorDTO(1L, "First Vendor", "url");
+        correctVendorDTOone = new VendorDTO(1L, "First DTO Vendor", "");
     }
 
     @Test
@@ -94,5 +93,17 @@ public class VendorServiceImplTest {
         vendorService.deleteVendor(correctVendorDTOone.getId());
 
         then(vendorRepository).should(times(1)).deleteById(correctVendorDTOone.getId());
+    }
+
+    @Test
+    public void testUpdateVendor() {
+        given(vendorRepository.save(any(Vendor.class)))
+                .willReturn(correctVendorOne);
+
+        VendorDTO updatedVendorDTO = vendorService.updateVendorById(correctVendorOne.getId(), correctVendorDTOone);
+        assertNotNull(updatedVendorDTO);
+        assertEquals(correctVendorOne.getId(), updatedVendorDTO.getId());
+        assertEquals(correctVendorOne.getName(), updatedVendorDTO.getName());
+        assertTrue(updatedVendorDTO.getVendorUrl().contains("/1"));
     }
 }

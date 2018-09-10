@@ -50,7 +50,10 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public VendorDTO updateVendorById(Long id, VendorDTO vendorDTO) {
-        return null;
+        vendorDTO.setId(id);
+        Vendor vendor = vendorMapper.vendorDTOtoVendor(vendorDTO);
+        Vendor savedVendor = vendorRepository.save(vendor);
+        return vendorMapper.vendorToVendorDTO(savedVendor);
     }
 
 }
