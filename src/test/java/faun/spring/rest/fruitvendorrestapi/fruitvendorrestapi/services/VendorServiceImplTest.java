@@ -109,4 +109,26 @@ public class VendorServiceImplTest {
         assertEquals(vendorOne.getName(), updatedVendorDTO.getName());
         assertTrue(updatedVendorDTO.getVendorUrl().contains("/" + vendorOne.getId()));
     }
+
+    @Test
+    public void testUpdateFieldsInVendorById() {
+        given(vendorRepository.findById(vendorOne.getId()))
+                .willReturn(Optional.of(vendorOne));
+
+        Vendor resultVendor = new Vendor(vendorOne.getId(), vendorDTO.getName());
+
+        given(vendorRepository.save(any(Vendor.class)))
+                .willReturn(resultVendor);
+
+        // Basically does the same as testUpdateVendor() because there is only one field in the Vendor class
+        VendorDTO updatedVendorDTO = vendorService.updateFieldsInVendorById(vendorOne.getId(), vendorDTO);
+
+        then(vendorRepository).should().findById(anyLong());
+        then(vendorRepository).should().save(any(Vendor.class));
+
+        assertNotNull(updatedVendorDTO);
+        assertEquals(vendorOne.getId(), updatedVendorDTO.getId());
+        assertEquals(vendorOne.getName(), updatedVendorDTO.getName());
+        assertTrue(updatedVendorDTO.getVendorUrl().contains("/" + vendorOne.getId()));
+    }
 }
