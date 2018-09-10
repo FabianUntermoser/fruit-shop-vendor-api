@@ -9,4 +9,6 @@ public interface VendorService {
     List<VendorDTO> getAllVendors();
 
     VendorDTO getVendorById(Long id);
+
+    VendorDTO addVendor(VendorDTO vendor);
 }

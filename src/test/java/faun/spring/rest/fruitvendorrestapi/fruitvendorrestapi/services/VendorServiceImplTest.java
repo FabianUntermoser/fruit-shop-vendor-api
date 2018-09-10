@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -28,6 +29,7 @@ public class VendorServiceImplTest {
 
     private VendorService vendorService;
     private Vendor correctVendorOne, correctVendorTwo;
+    private VendorDTO correctVendorDTOone;
 
     @Before
     public void setUp() {
@@ -35,6 +37,7 @@ public class VendorServiceImplTest {
         vendorService = new VendorServiceImpl(vendorRepository, new VendorMapper());
         correctVendorOne = new Vendor(1L, "First Vendor");
         correctVendorTwo = new Vendor(2L, "Second Vendor");
+        correctVendorDTOone = new VendorDTO(1L, "First Vendor", "url");
     }
 
     @Test
@@ -71,5 +74,18 @@ public class VendorServiceImplTest {
                 .willReturn(Optional.empty());
 
         vendorService.getVendorById(999L);
+    }
+
+    @Test
+    public void testAddVendor() {
+        given(vendorRepository.save(any(Vendor.class)))
+                .willReturn(correctVendorOne);
+
+        VendorDTO vendorDTO = vendorService.addVendor(correctVendorDTOone);
+
+        then(vendorRepository).should(times(1)).save(any(Vendor.class));
+
+        assertNotNull(vendorDTO);
+        assertEquals(correctVendorOne.getId(), vendorDTO.getId());
     }
 }

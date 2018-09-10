@@ -2,6 +2,7 @@ package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.services;
 
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto.VendorDTO;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.mapper.VendorMapper;
+import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.domain.Vendor;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.exceptions.ResourceNotFoundException;
 import faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.repositories.VendorRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,13 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepository.findById(id)
                 .map(vendorMapper::vendorToVendorDTO)
                 .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Override
+    public VendorDTO addVendor(VendorDTO vendor) {
+        Vendor converted = vendorMapper.vendorDTOtoVendor(vendor);
+        Vendor saved = vendorRepository.save(converted);
+        return vendorMapper.vendorToVendorDTO(saved);
     }
 
 }
