@@ -12,11 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,14 +35,13 @@ public class VendorControllerTest {
     @MockBean
     private VendorService vendorService;
 
-    private List<VendorDTO> vendorResultList;
+    private VendorDTO corretVendorOne, corretVendorTwo, corretVendorThree;
 
     @Before
     public void setUp() {
-        vendorResultList = new ArrayList<>();
-        vendorResultList.add(new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1"));
-        vendorResultList.add(new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2"));
-        vendorResultList.add(new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3"));
+        corretVendorOne = new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1");
+        corretVendorTwo = new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2");
+        corretVendorThree = new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3");
     }
 
     @Test
@@ -51,12 +53,28 @@ public class VendorControllerTest {
 
     @Test
     public void testGettingAllVendors() throws Exception {
-        given(vendorService.getAllVendors()).willReturn(vendorResultList);
+        given(vendorService.getAllVendors())
+                .willReturn(Arrays.asList(corretVendorOne, corretVendorTwo, corretVendorThree));
 
         mockMvc.perform(get(VendorController.BASE_API_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.vendors", hasSize(3)));
+
+        then(vendorService).should(times(1)).getAllVendors();
+    }
+
+    @Test
+    public void testGettingVendorById() throws Exception {
+        given(vendorService.getVendorById(anyLong()))
+                .willReturn(corretVendorOne);
+
+        mockMvc.perform(get(VendorController.BASE_API_URL + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(corretVendorOne.getName())));
+
+        then(vendorService).should(times(1)).getVendorById(anyLong());
     }
 
 }
