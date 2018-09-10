@@ -19,7 +19,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.times;
 
 public class VendorServiceImplTest {
 
@@ -48,7 +47,7 @@ public class VendorServiceImplTest {
 
         List<VendorDTO> vendorDTOs = vendorService.getAllVendors();
 
-        then(vendorRepository).should(times(1)).findAll();
+        then(vendorRepository).should().findAll();
 
         assertNotNull(vendorDTOs);
         assertEquals(2, vendorDTOs.size());
@@ -63,7 +62,7 @@ public class VendorServiceImplTest {
 
         VendorDTO foundVendor = vendorService.getVendorById(1L);
 
-        then(vendorRepository).should(times(1)).findById(anyLong());
+        then(vendorRepository).should().findById(anyLong());
 
         assertNotNull(foundVendor);
         assertEquals(vendorOne.getId(), foundVendor.getId());
@@ -84,7 +83,7 @@ public class VendorServiceImplTest {
 
         VendorDTO addedVendor = vendorService.addVendor(vendorDTO);
 
-        then(vendorRepository).should(times(1)).save(any(Vendor.class));
+        then(vendorRepository).should().save(any(Vendor.class));
 
         assertNotNull(addedVendor);
         assertEquals(vendorOne.getId(), addedVendor.getId());
@@ -94,7 +93,7 @@ public class VendorServiceImplTest {
     public void testDeleteVendor() {
         vendorService.deleteVendor(vendorDTO.getId());
 
-        then(vendorRepository).should(times(1)).deleteById(vendorDTO.getId());
+        then(vendorRepository).should().deleteById(vendorDTO.getId());
     }
 
     @Test

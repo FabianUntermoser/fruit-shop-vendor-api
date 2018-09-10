@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,7 +61,7 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.vendors", hasSize(3)));
 
-        then(vendorService).should(times(1)).getAllVendors();
+        then(vendorService).should().getAllVendors();
     }
 
     @Test
@@ -75,7 +74,7 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
 
-        then(vendorService).should(times(1)).getVendorById(anyLong());
+        then(vendorService).should().getVendorById(anyLong());
     }
 
     @Test
@@ -104,7 +103,7 @@ public class VendorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        then(vendorService).should(times(1)).deleteVendor(anyLong());
+        then(vendorService).should().deleteVendor(anyLong());
     }
 
     @Test
@@ -118,7 +117,7 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
 
-        then(vendorService).should(times(1)).updateVendorById(anyLong(), any(VendorDTO.class));
+        then(vendorService).should().updateVendorById(anyLong(), any(VendorDTO.class));
     }
 
     @Test
@@ -132,6 +131,6 @@ public class VendorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
 
-        then(vendorService).should(times(1)).updateFieldsInVendorById(anyLong(), any(VendorDTO.class));
+        then(vendorService).should().updateFieldsInVendorById(anyLong(), any(VendorDTO.class));
     }
 }
