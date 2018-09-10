@@ -1,9 +1,11 @@
 package faun.spring.rest.fruitvendorrestapi.fruitvendorrestapi.api.v1.vendors.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VendorDTO {
 
+    @JsonIgnore
     private Long id;
     private String name;
 
