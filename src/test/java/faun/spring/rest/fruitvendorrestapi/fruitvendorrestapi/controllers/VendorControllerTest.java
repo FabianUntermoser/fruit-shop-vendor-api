@@ -120,4 +120,18 @@ public class VendorControllerTest {
 
         then(vendorService).should(times(1)).updateVendorById(anyLong(), any(VendorDTO.class));
     }
+
+    @Test
+    public void testPatchVendor() throws Exception {
+        given(vendorService.updateFieldsInVendorById(anyLong(), any(VendorDTO.class)))
+                .willReturn(correctVendorDTOone);
+
+        mockMvc.perform(patch(VendorController.BASE_API_URL + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJsonString(correctVendorDTOone)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
+
+        then(vendorService).should(times(1)).updateFieldsInVendorById(anyLong(), any(VendorDTO.class));
+    }
 }

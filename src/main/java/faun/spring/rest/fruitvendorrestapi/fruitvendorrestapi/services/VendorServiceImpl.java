@@ -56,4 +56,9 @@ public class VendorServiceImpl implements VendorService {
         return vendorMapper.vendorToVendorDTO(savedVendor);
     }
 
+    @Override
+    public VendorDTO updateFieldsInVendorById(Long id, VendorDTO vendorDTO) {
+        return null;
+    }
+
 }
