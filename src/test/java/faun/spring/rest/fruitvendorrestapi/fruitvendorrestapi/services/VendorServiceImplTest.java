@@ -23,26 +23,28 @@ import static org.mockito.Mockito.times;
 
 public class VendorServiceImplTest {
 
+    private static final Long INVALID_ID = 999L;
+
     @Mock
     private VendorRepository vendorRepository;
 
     private VendorService vendorService;
-    private Vendor correctVendorOne, correctVendorTwo;
-    private VendorDTO correctVendorDTOone;
+    private Vendor vendorOne, vendorTwo;
+    private VendorDTO vendorDTO;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         vendorService = new VendorServiceImpl(vendorRepository, new VendorMapper());
-        correctVendorOne = new Vendor(1L, "First Vendor");
-        correctVendorTwo = new Vendor(2L, "Second Vendor");
-        correctVendorDTOone = new VendorDTO(1L, "First DTO Vendor", "");
+        vendorOne = new Vendor(1L, "First Vendor");
+        vendorTwo = new Vendor(2L, "Second Vendor");
+        vendorDTO = new VendorDTO(1L, "First DTO Vendor", "");
     }
 
     @Test
     public void getAllVendors() {
         given(vendorRepository.findAll())
-                .willReturn(Arrays.asList(correctVendorOne, correctVendorTwo));
+                .willReturn(Arrays.asList(vendorOne, vendorTwo));
 
         List<VendorDTO> vendorDTOs = vendorService.getAllVendors();
 
@@ -50,21 +52,21 @@ public class VendorServiceImplTest {
 
         assertNotNull(vendorDTOs);
         assertEquals(2, vendorDTOs.size());
-        assertEquals(correctVendorOne.getId(), vendorDTOs.get(0).getId());
-        assertEquals(correctVendorTwo.getId(), vendorDTOs.get(1).getId());
+        assertEquals(vendorOne.getId(), vendorDTOs.get(0).getId());
+        assertEquals(vendorTwo.getId(), vendorDTOs.get(1).getId());
     }
 
     @Test
     public void getVendorById() {
         given(vendorRepository.findById(anyLong()))
-                .willReturn(Optional.of(correctVendorOne));
+                .willReturn(Optional.of(vendorOne));
 
-        VendorDTO vendorDTO = vendorService.getVendorById(1L);
+        VendorDTO foundVendor = vendorService.getVendorById(1L);
 
         then(vendorRepository).should(times(1)).findById(anyLong());
 
-        assertNotNull(vendorDTO);
-        assertEquals(correctVendorOne.getId(), vendorDTO.getId());
+        assertNotNull(foundVendor);
+        assertEquals(vendorOne.getId(), foundVendor.getId());
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -72,38 +74,39 @@ public class VendorServiceImplTest {
         given(vendorRepository.findById(anyLong()))
                 .willReturn(Optional.empty());
 
-        vendorService.getVendorById(999L);
+        vendorService.getVendorById(INVALID_ID);
     }
 
     @Test
     public void testAddVendor() {
         given(vendorRepository.save(any(Vendor.class)))
-                .willReturn(correctVendorOne);
+                .willReturn(vendorOne);
 
-        VendorDTO vendorDTO = vendorService.addVendor(correctVendorDTOone);
+        VendorDTO addedVendor = vendorService.addVendor(vendorDTO);
 
         then(vendorRepository).should(times(1)).save(any(Vendor.class));
 
-        assertNotNull(vendorDTO);
-        assertEquals(correctVendorOne.getId(), vendorDTO.getId());
+        assertNotNull(addedVendor);
+        assertEquals(vendorOne.getId(), addedVendor.getId());
     }
 
     @Test
     public void testDeleteVendor() {
-        vendorService.deleteVendor(correctVendorDTOone.getId());
+        vendorService.deleteVendor(vendorDTO.getId());
 
-        then(vendorRepository).should(times(1)).deleteById(correctVendorDTOone.getId());
+        then(vendorRepository).should(times(1)).deleteById(vendorDTO.getId());
     }
 
     @Test
     public void testUpdateVendor() {
         given(vendorRepository.save(any(Vendor.class)))
-                .willReturn(correctVendorOne);
+                .willReturn(vendorOne);
 
-        VendorDTO updatedVendorDTO = vendorService.updateVendorById(correctVendorOne.getId(), correctVendorDTOone);
+        VendorDTO updatedVendorDTO = vendorService.updateVendorById(vendorOne.getId(), vendorDTO);
+
         assertNotNull(updatedVendorDTO);
-        assertEquals(correctVendorOne.getId(), updatedVendorDTO.getId());
-        assertEquals(correctVendorOne.getName(), updatedVendorDTO.getName());
-        assertTrue(updatedVendorDTO.getVendorUrl().contains("/1"));
+        assertEquals(vendorOne.getId(), updatedVendorDTO.getId());
+        assertEquals(vendorOne.getName(), updatedVendorDTO.getName());
+        assertTrue(updatedVendorDTO.getVendorUrl().contains("/" + vendorOne.getId()));
     }
 }
