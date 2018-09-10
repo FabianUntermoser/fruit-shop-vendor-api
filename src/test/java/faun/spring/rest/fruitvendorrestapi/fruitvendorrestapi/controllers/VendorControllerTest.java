@@ -17,8 +17,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -37,11 +36,11 @@ public class VendorControllerTest {
     @MockBean
     private VendorService vendorService;
 
-    private VendorDTO correctVendorOne, correctVendorTwo, correctVendorThree;
+    private VendorDTO correctVendorDTOone, correctVendorTwo, correctVendorThree;
 
     @Before
     public void setUp() {
-        correctVendorOne = new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1");
+        correctVendorDTOone = new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1");
         correctVendorTwo = new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2");
         correctVendorThree = new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3");
     }
@@ -56,7 +55,7 @@ public class VendorControllerTest {
     @Test
     public void testGettingAllVendors() throws Exception {
         given(vendorService.getAllVendors())
-                .willReturn(Arrays.asList(correctVendorOne, correctVendorTwo, correctVendorThree));
+                .willReturn(Arrays.asList(correctVendorDTOone, correctVendorTwo, correctVendorThree));
 
         mockMvc.perform(get(VendorController.BASE_API_URL)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -69,12 +68,12 @@ public class VendorControllerTest {
     @Test
     public void testGettingVendorById() throws Exception {
         given(vendorService.getVendorById(anyLong()))
-                .willReturn(correctVendorOne);
+                .willReturn(correctVendorDTOone);
 
         mockMvc.perform(get(VendorController.BASE_API_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(correctVendorOne.getName())));
+                .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
 
         then(vendorService).should(times(1)).getVendorById(anyLong());
     }
@@ -82,13 +81,13 @@ public class VendorControllerTest {
     @Test
     public void testPostVendor() throws Exception {
         given(vendorService.addVendor(anyObject()))
-                .willReturn(correctVendorOne);
+                .willReturn(correctVendorDTOone);
 
         mockMvc.perform(post(VendorController.BASE_API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJsonString(correctVendorOne)))
+                .content(toJsonString(correctVendorDTOone)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", equalTo(correctVendorOne.getName())));
+                .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
     }
 
     private String toJsonString(VendorDTO vendor) {
@@ -106,5 +105,19 @@ public class VendorControllerTest {
                 .andExpect(status().isOk());
 
         then(vendorService).should(times(1)).deleteVendor(anyLong());
+    }
+
+    @Test
+    public void testPutVendor() throws Exception {
+        given(vendorService.updateVendorById(anyLong(), any(VendorDTO.class)))
+                .willReturn(correctVendorDTOone);
+
+        mockMvc.perform(put(VendorController.BASE_API_URL + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJsonString(correctVendorDTOone)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(correctVendorDTOone.getName())));
+
+        then(vendorService).should(times(1)).updateVendorById(anyLong(), any(VendorDTO.class));
     }
 }
