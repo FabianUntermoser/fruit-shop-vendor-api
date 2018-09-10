@@ -8,5 +8,5 @@ public interface VendorService {
 
     List<VendorDTO> getAllVendors();
 
-    VendorDTO findVendorById(Long id);
+    VendorDTO getVendorById(Long id);
 }

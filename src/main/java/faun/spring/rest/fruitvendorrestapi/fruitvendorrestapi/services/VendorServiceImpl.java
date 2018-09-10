@@ -29,7 +29,7 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public VendorDTO findVendorById(Long id) {
+    public VendorDTO getVendorById(Long id) {
         return vendorRepository.findById(id)
                 .map(vendorMapper::vendorToVendorDTO)
                 .orElseThrow(ResourceNotFoundException::new);

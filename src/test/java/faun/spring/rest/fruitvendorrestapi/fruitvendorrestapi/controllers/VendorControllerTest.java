@@ -35,13 +35,13 @@ public class VendorControllerTest {
     @MockBean
     private VendorService vendorService;
 
-    private VendorDTO corretVendorOne, corretVendorTwo, corretVendorThree;
+    private VendorDTO correctVendorOne, correctVendorTwo, correctVendorThree;
 
     @Before
     public void setUp() {
-        corretVendorOne = new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1");
-        corretVendorTwo = new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2");
-        corretVendorThree = new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3");
+        correctVendorOne = new VendorDTO(1L, "first VendorDTO", VendorController.BASE_API_URL + "/1");
+        correctVendorTwo = new VendorDTO(2L, "second VendorDTO", VendorController.BASE_API_URL + "/2");
+        correctVendorThree = new VendorDTO(3L, "third VendorDTO", VendorController.BASE_API_URL + "/3");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class VendorControllerTest {
     @Test
     public void testGettingAllVendors() throws Exception {
         given(vendorService.getAllVendors())
-                .willReturn(Arrays.asList(corretVendorOne, corretVendorTwo, corretVendorThree));
+                .willReturn(Arrays.asList(correctVendorOne, correctVendorTwo, correctVendorThree));
 
         mockMvc.perform(get(VendorController.BASE_API_URL)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -66,13 +66,12 @@ public class VendorControllerTest {
 
     @Test
     public void testGettingVendorById() throws Exception {
-        given(vendorService.getVendorById(anyLong()))
-                .willReturn(corretVendorOne);
+        given(vendorService.getVendorById(anyLong())).willReturn(correctVendorOne);
 
         mockMvc.perform(get(VendorController.BASE_API_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(corretVendorOne.getName())));
+                .andExpect(jsonPath("$.name", equalTo(correctVendorOne.getName())));
 
         then(vendorService).should(times(1)).getVendorById(anyLong());
     }
