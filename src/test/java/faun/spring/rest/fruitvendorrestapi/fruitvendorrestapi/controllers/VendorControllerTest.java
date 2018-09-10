@@ -22,8 +22,7 @@ import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,5 +97,14 @@ public class VendorControllerTest {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    @Test
+    public void testDeleteVendor() throws Exception {
+        mockMvc.perform(delete(VendorController.BASE_API_URL + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        then(vendorService).should(times(1)).deleteVendor(anyLong());
     }
 }
